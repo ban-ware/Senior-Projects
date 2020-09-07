@@ -1,2 +1,6 @@
-The objective of this project was to find an automated solution to deshuffle the image messed32.jpg.  With a limited timeframe, we had trouble finding a good method for this, and decided to simply map the image out ourselves, grab each individual piece of the shuffled image, and move it where it belonged.  It took a while to understand the numbering system, and it's been too long for me to remember what was going on.  
+The objective of this project was to find an automated solution to deshuffle the image messed32.jpg.  
+With a limited timeframe, we had trouble finding a good method for this, and decided to simply 
+map the image out ourselves, grab each individual piece of the shuffled image, and move it 
+where it belonged.  It took a while to understand the numbering system, and it's been too 
+long for me to remember what was going on.  
 
