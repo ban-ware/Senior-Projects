@@ -1,0 +1,236 @@
+
+<app-navbar></app-navbar>
+<div class="button-container">
+    <fa-icon [icon]="['fas', 'angle-left']" size="3x" class="fa-angle-left " [routerLink]="['/dashboard']"></fa-icon>
+    <button type="button" class="btn btn-primary mb-4" [routerLink]="['/dashboard/']">Back to Home</button>
+</div> 
+<div class="container">
+    <div class="content report">
+        <div class="row">
+            <div class="col-6 col-md-4">
+                <div class="dark-card text-center">
+                    <div class="row">
+                    <div class="col-12 text-center">
+                        <button class="btn btn-primary w-100" (click)="getMoistureAvailabilityInput()">Moisture Availability Report</button>
+                        <button class="btn btn-primary w-100 mt-2" (click)="getFuelUsageInput()">Fuel Usage Report</button>
+                        <button class="btn btn-primary w-100 mt-2" (click)="getSessionsAndGallonsInput()">Sessions/Gallons Report</button>
+                        <button class="btn btn-primary w-100 mt-2" (click)="getUserActivityInput()">User Activity Report</button>
+                    </div></div>
+                </div>
+            </div>
+            <div class="col-6 col-md-8">
+                <div class="dark-card match-height text-center">
+                    <div [hidden]="hideDefault" class="row">
+                        <div class="col-12 text-center pt-6">
+                            <h1>Select the Report to be Generated<br>from the list on the SideBar</h1>
+                        </div>
+                    </div>
+                    <div [hidden]="hideMoistureAvailabilityInput" class="row">
+                        <div class="col-12 text-center pt-5">
+                            <h1>Moisture Availability Report</h1>
+                            <p><i>Please Select a Field and a Beginning and End Date for Time Range.<br>
+                                The Report will Return Pump Sessions and Moisture Availability Data for <br>
+                                the Field and Time Range Selected.</i>
+                            </p>
+                        </div>
+                        <div class="col-12 text-center">
+                            <p class="title">
+                              Select Field
+                            </p>
+                            <div class="dark-card form-group">
+                              <mat-select [(ngModel)]="selectedField" (ngModelChange)="selectFieldById(selectedField)" 
+                              placeholder="List of Fields on Account" class="solo-select form-control">
+                                <mat-option *ngFor="let field of fields" [value]="field">{{field.field_identifier}}
+                                </mat-option>
+                              </mat-select>
+                            </div>
+                          </div>
+                        <div class="col-12 text-center pt-5">
+                            <p><b>Start Date: </b>&nbsp; 
+                                <mat-form-field>
+                                    <mat-label>Choose a Start Date</mat-label>
+                                    <input [max]="maxDate" [(ngModel)]="startDate" matInput [matDatepicker]="moistureAvailabilityStartDate" (dateInput)="selectStartDate(startDate)">
+                                    <mat-datepicker-toggle matPrefix [for]="moistureAvailabilityStartDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #moistureAvailabilityStartDate></mat-datepicker>
+                                </mat-form-field>  
+                                &nbsp; <b>End Date: </b>&nbsp; 
+                                <mat-form-field>
+                                    <mat-label>Choose an End Date</mat-label>
+                                    <input [max]="maxDate" [(ngModel)]="endDate" matInput [matDatepicker]="moistureAvailabilityEndDate" (dateInput)="selectEndDate(endDate)">
+                                    <mat-datepicker-toggle matPrefix [for]="moistureAvailabilityEndDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #moistureAvailabilityEndDate></mat-datepicker>
+                                </mat-form-field>
+                            </p>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button class="btn btn-primary " (click)="generateMoistureAvailabilityReport()" [disabled]="!selectedField || !startDate || !endDate" >Generate Report</button>
+                        </div>
+                    </div>
+                    <div [hidden]="hideFuelUsageInput" class="row">
+                        <div class="col-12 text-center pt-5">
+                            <h1>Fuel Usage Report</h1>
+                            <p><i>Please select Beginning and End Date for the Report.<br>The Report will Return Fuel Usage Data for Pump Sessions in the time range.<br>
+                                Reports can also be run on a Headquarters, Tract, Field, or Pump.</i>
+                            </p>
+                        </div>
+                        <div class="col-12 text-center">
+                            <p class="title">
+                              Select Criteria for Fuel Usage Report
+                            </p>
+                            <div class="form-group">
+                              <mat-select [(ngModel)]="selectedCriteria" (ngModelChange)="selectCriteria(selectedCriteria)" 
+                                placeholder="Selectable Criteria" class="solo-select form-control">
+                                <mat-option *ngFor="let criteria of criteriaOptions" [value]="criteria">{{criteria}}
+                                </mat-option>
+                              </mat-select>
+                            </div>
+                          </div>
+                            <div [hidden]="hideHeadquarters" class="col-12 text-center">
+                                <p class="title">
+                                    Select a Headquarters
+                                </p>
+                                <div class="form-group">
+                                    <mat-select  [(ngModel)]="selectedHq" (ngModelChange)="selectHeadquartersById(selectedHq)" 
+                                    placeholder="List of Headquarters of Account" class="solo-select form-control">
+                                    <mat-option *ngFor="let hq of headquarters" [value]="hq">{{hq.name}}
+                                    </mat-option>
+                                    </mat-select>
+                                </div>
+                            </div>
+                            <div [hidden]="hideField" class="col-12 text-center">
+                                <p class="title">
+                                  Select a Field
+                                </p>
+                                <div class="dark-card form-group">
+                                  <mat-select [(ngModel)]="selectedField" (ngModelChange)="selectFieldById(selectedField)" 
+                                  placeholder="List of Fields on Account" class="solo-select form-control">
+                                    <mat-option *ngFor="let field of fields" [value]="field">{{field.field_identifier}}
+                                    </mat-option>
+                                  </mat-select>
+                                </div>
+                              </div>
+                            <div [hidden]="hidePump" class="col-12 text-center">
+                                <p class="title">
+                                    Select a Pump
+                                </p>
+                                <div class="form-group">
+                                    <mat-select  [(ngModel)]="selectedPump" (ngModelChange)="selectPumpById(selectedPump)" 
+                                    placeholder="List of Pumps on Account" class="solo-select form-control">
+                                    <mat-option *ngFor="let pump of pumps" [value]="pump">{{pump.name}}
+                                    </mat-option>
+                                    </mat-select>
+                                </div>
+                            </div>
+                        <div class="col-12 text-center pt-5">
+                            <p><b>Start Date: </b>&nbsp; 
+                                <mat-form-field>
+                                    <mat-label>Choose a Start Date</mat-label>
+                                    <input [max]="maxDate" [(ngModel)]="startDate" matInput [matDatepicker]="fuelUsageStartDate" (dateInput)="selectStartDate(startDate)">
+                                    <mat-datepicker-toggle matPrefix [for]="fuelUsageStartDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #fuelUsageStartDate></mat-datepicker>
+                                </mat-form-field>  
+                                &nbsp; <b>End Date: </b>&nbsp; 
+                                <mat-form-field>
+                                    <mat-label>Choose an End Date</mat-label>
+                                    <input [max]="maxDate" [(ngModel)]="endDate" matInput [matDatepicker]="fuelUsageEndDate" (dateInput)="selectEndDate(endDate)">
+                                    <mat-datepicker-toggle matPrefix [for]="fuelUsageEndDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #fuelUsageEndDate></mat-datepicker>
+                                </mat-form-field>
+                            </p>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button class="btn btn-primary " (click)="generateFuelUsageReport()" [disabled]="!selectedHq && !selectedField && !selectedPump || !selectedCriteria || !startDate || !endDate">Generate Report</button>
+                        </div>
+                    </div>
+                    <div [hidden]="hideSessionsAndGallonsInput" class="row">
+                        <div class="col-12 text-center pt-5">
+                            <h1>Pump Sessions and Gallons Pumped for Weeks Report</h1>
+                            <p><i>Please Select a Beginning, how many weeks the Report should cover, and the Headquarters.<br>
+                                The Report will Return Pump Sessions and Gallons Pumped for the Headquarters in the time range.<br>
+                            </i>
+                            </p>
+                        </div>
+                        <div class="col-12 text-center">
+                            <p class="title">
+                              Select Headquarters
+                            </p>
+                            <div class="form-group">
+                              <mat-select [(ngModel)]="selectedHq" (ngModelChange)="selectHeadquartersById(selectedHq)" 
+                              placeholder="List of Headquarters on Account" class="solo-select form-control">
+                                <mat-option *ngFor="let hq of headquarters" [value]="hq">{{hq.name}}
+                                </mat-option>
+                              </mat-select>
+                            </div>
+                          </div>
+                          <div class="col-12 text-center">
+                            <p class="title">
+                              Select Number of Weeks for Report
+                            </p>
+                            <div class="form-group">
+                              <mat-select  [(ngModel)]="selectedWeeks" (ngModelChange)="selectWeeksNumber(selectedWeeks)" 
+                              placeholder="Number of Weeks" class="solo-select form-control">
+                                <mat-option *ngFor="let week of weeks" [value]="week">{{week}}
+                                </mat-option>
+                              </mat-select>
+                            </div>
+                          </div>
+                        <div class="col-12 text-center pt-5">
+                            <p><b>Start Date: </b>&nbsp; 
+                                <mat-form-field>
+                                    <mat-label>Choose a Start Date</mat-label>
+                                    <input [max]="maxDate" [(ngModel)]="startDate" matInput [matDatepicker]="sessionsAndGallonsStartDate" (dateInput)="selectStartDate(startDate)">
+                                    <mat-datepicker-toggle matPrefix [for]="sessionsAndGallonsStartDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #sessionsAndGallonsStartDate></mat-datepicker>
+                                </mat-form-field>  
+                            </p>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button class="btn btn-primary" (click)="generatePumpSessionsAndGallonsReport()" [disabled]="!selectedHq || !selectedWeeks || !startDate">Generate Report</button>
+                        </div>
+                    </div>
+                    <div [hidden]="hideUserActivityInput" class="row">
+                        <div class="col-12 text-center pt-5">
+                            <h1>User Activity Report</h1>
+                            <p><i>Please Select an Employee, a Beginning and End Date for Time Range.<br>
+                                The Report will Return Maintenance Concerns and Sessions created or Ended/Resolved by the user in the time range.</i>
+                            </p>
+                        </div>
+                        <div class="col-12 text-center">
+                            <p class="title">
+                              Select User
+                            </p>
+                            <div class="form-group">
+                              <mat-select [(ngModel)]="selectedUser" (ngModelChange)="selectUser(selectedUser)" 
+                              placeholder="List of Users on Owned Headquarters" class="solo-select form-control">
+                                <mat-option *ngFor="let user of users" [value]="user">{{user.first_name}} {{user.last_name}}
+                                </mat-option>
+                              </mat-select>
+                            </div>
+                          </div>
+                        <div class="col-12 text-center pt-5">
+                            <p><b>Start Date: </b>&nbsp; 
+                                <mat-form-field>
+                                    <mat-label>Choose a Start Date</mat-label>
+                                    <input [max]="maxDate" [(ngModel)]="startDate" matInput [matDatepicker]="userActivityStartDate" (dateInput)="selectStartDate(startDate)">
+                                    <mat-datepicker-toggle matPrefix [for]="userActivityStartDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #userActivityStartDate></mat-datepicker>
+                                </mat-form-field>  
+                                &nbsp; <b>End Date: </b>&nbsp; 
+                                <mat-form-field>
+                                    <mat-label>Choose an End Date</mat-label>
+                                    <input [max]="maxDate" [(ngModel)]="endDate" matInput [matDatepicker]="userActivityEndDate" (dateInput)="selectEndDate(endDate)">
+                                    <mat-datepicker-toggle matPrefix [for]="userActivityEndDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #userActivityEndDate></mat-datepicker>
+                                </mat-form-field>
+                            </p>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button class="btn btn-primary" (click)="generateUserActivityReport()" [disabled]="!selectedUser || !startDate || !endDate">Generate Report</button>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+ 

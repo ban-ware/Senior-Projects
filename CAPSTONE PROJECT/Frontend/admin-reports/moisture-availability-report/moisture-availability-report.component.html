@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+<div class="button-container">
+    <fa-icon [icon]="['fas', 'angle-left']" size="3x" class="fa-angle-left " (click)="clearStorage()" [routerLink]="['/reports']"></fa-icon>
+    <button type="button" class="btn btn-primary mb-4" (click)="clearStorage()" [routerLink]="['/reports']">Back to Reports</button>
+</div>    
+<div class="container">
+    <div class="content container">
+        <div class="row">
+            <div class="col-12">
+                <div class="dark-card match-height text-center">
+                    <div class="row">
+                        <div class="col-12 text-center pb-10">
+                            <h1>Moisture Availability Report</h1>
+                            <p>Field Selected: <i><b>{{fieldIdentifier}}</b> </i> from <i> {{selectedStartDate}} - {{selectedEndDate}}</i></p>
+                            <p><i> Total Duration of Sessions: </i><b>{{durationTotalHours}} Hours</b> &nbsp; - &nbsp;
+                            <i>Total Gallons Pumped for Sessions: </i><b>{{gallonsTotal}} Gallons</b> &nbsp; - &nbsp;
+                            <i>Mean Water-Per-Inch of Sessions: </i><b>{{waterPerInchMean}} Inches</b></p>
+                        </div>
+                        <div class="col-12 text-center">    
+                            <h3>Pump Sessions for Field in Timeframe:</h3>
+                            <div *ngFor="let session of pumpSessions; let i = index">
+                                <div class="alignleft">
+                                    <p> Session ID#:{{session.session_id}}, StartDate:  {{session.session_start_date}}<br>
+                                    Session Duration: {{session.session_duration_in_min}}min.</p>
+                                </div>
+                                <div class="alignright">                
+                                    <p> Gallons Pumped: {{session.total_session_gallons}}, Gallons-Per-Minute of Pump: {{session.gallons_per_minute}}<br>
+                                    Session Water-Per-Inch: {{session.water_per_inch}} Inches, Waterable Acreage: {{session.waterable_acreage}}</p>
+                                </div>                     
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

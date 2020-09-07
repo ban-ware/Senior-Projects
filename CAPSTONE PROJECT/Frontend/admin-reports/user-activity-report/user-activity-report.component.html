@@ -1,0 +1,50 @@
+<app-navbar></app-navbar>
+<div class="button-container">
+    <fa-icon [icon]="['fas', 'angle-left']" size="3x" class="fa-angle-left " (click)="clearStorage()" [routerLink]="['/reports']"></fa-icon>
+    <button type="button" class="btn btn-primary mb-4" (click)="clearStorage()" [routerLink]="['/reports']">Back to Reports</button>
+</div>    
+<div class="container">
+    <div class="content container">
+        <div class="row">
+            <div class="col-12">
+                <div  [style.height.%]="100" class="dark-card match-height text-center">
+                    <div class="row">
+                        <div class="col-12 text-center pb-10">
+                            <h1>User Activity Report</h1>
+                            <p>User Selected: <i><b>{{criteriaName}}</b></i></p>
+                        </div>
+                        <div class="col-12 text-center">    
+                            <h3>User Pump Sessions for Timeframe:</h3>
+                            <div *ngFor="let session of pumpSessions; let i = index">
+                                <br><br><br><br><p>Field:  {{session.field_identifier}} </p>
+                                <div class="alignleft">
+                                    <p> Session ID#:{{session.id}}<br> StartDate:  {{session.start_time}}<br>
+                                    Planned Duration: {{session.planned_duration_in_hours}}hrs.</p>
+                                </div>
+                                <div class="alignright">                
+                                    <p> Gallons Pumped: {{session.total_gallons_used}}<br> Pump rate: {{session.gallons_per_minute}}<br>
+                                    Irrigation Section: {{session.irrigation_section_name}}</p>
+                                </div>                     
+                            </div>
+                            <br>
+                        </div>  
+                        <div class="col-12 text-center">    
+                            <h3>User Maintenance Concerns for Timeframe:</h3>
+                            <div *ngFor="let concern of maintenanceConcerns; let i = index">
+                                <div class="alignleft">
+                                    <p> Concern ID#:{{concern.id}} <br> Created at: {{concern.created_at}}<br>
+                                    Resolved?: <b>{{concern.is_resolved}}</b></p>
+                                </div>
+                                <div class="alignright"> 
+                                    <p>Note Text: {{concern.note}} <br>
+                                        Concern Level: {{concern.concern_type}}
+                                    </p>               
+                                </div>                     
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
