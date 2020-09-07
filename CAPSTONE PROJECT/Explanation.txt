@@ -1,0 +1,13 @@
+This is the big one.  I was part of a group of 3, with both of my group members being Computer Information Systems majors. 
+
+The project was to implement a report interface into the web app of a local startup, PumpTrakr.
+
+The goal of PumpTrakr was to automate irrigation systems for farmers.  Our reporting interface gave the option for users to view their overall fuel usage,
+moisture availability, pump sessions, and gallons pumped. We also included a report for admins to view user activity.  
+
+I will say, one of my group members got a job with PumpTrakr in QA, and happened to be an absolute monster when it came to programming.  This man wrote well over 2k lines
+of code in just about 2 months.  I wish I could say I contributed more, but my role turned into bug-hunting, formatting, and restructuring.  Basically I took some of
+the ideas that he implemented, and cleaned them up.  I ended up contributing +8 lines of code, but removed much more than that.
+
+This project was incredibly fun, and I got to learn more about Full Stack engineering as well as SQL, Ruby, and Typescript. I had little to no experience with any of 
+the technologies used, but now I feel comfortable with them, and have been working on a small project in Rust/Typescript using WASM.
