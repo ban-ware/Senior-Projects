@@ -1,0 +1,14 @@
+Basically the objective of this project was to implement some security measures and some quality of life features into a web application / webserver we were provided with.
+
+Some details about the application first, however.  The way that HTML is being served from the device is very clunky and overly complex. Basically there is an entire
+webpage worth of code that has been gzipped, and to do any sort of testing or work, one must ungzip the code, edit it, re-gzip it, then place it back in the 
+program and cross their fingers.
+
+The first thing we decided to do was allow users to toggle the ability to use "pro" features, or the more complex features of the webcam.  After this,
+we attempted to implement a login system.  We had a lot of trouble with this, as any encryption had to be in pure javascript.  This left us with few
+succinct and timely options.  We ended up doing a simple implementation of a hashmap.  This worked in testing, but wouldn't function inside the script tag.
+
+It's not a quality project by any means, but I learned a lot from it.  Much of this project was thinking on your feet and problem solving.
+
+
+I hope that I never have to implement HTML in this way again.
